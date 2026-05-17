@@ -104,7 +104,7 @@
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
 
   h1 {
-    font-size: clamp(52px, 9vw, 110px);
+    font-size: clamp(44px, 8vw, 100px);
     font-weight: 800;
     line-height: .95;
     letter-spacing: -2px;
@@ -178,7 +178,7 @@
   /* ── ABOUT ── */
   #about .grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.2fr 0.8fr;
     gap: 60px;
     margin-top: 60px;
     align-items: start;
@@ -211,6 +211,14 @@
     margin-bottom: 6px;
   }
   .stat-label { font-size: 12px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+
+  /* ── ARCHITECTURE SECTION (NEW) ── */
+  #architecture { background: #0a0f1b; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .arch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 50px; }
+  .arch-card { background: var(--bg); border: 1px solid var(--border); padding: 32px; border-radius: 6px; }
+  .arch-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 14px; color: var(--text); }
+  .arch-card p { font-size: 14px; color: #8a9ab5; line-height: 1.7; }
+  .arch-tag { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--blue); text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 1px; }
 
   /* ── EVOLUTION ── */
   #evolution { background: var(--bg2); }
@@ -484,13 +492,14 @@
     .nav-links { display: none; }
     section { padding: 80px 24px; }
     #about .grid { grid-template-columns: 1fr; gap: 40px; }
+    .arch-grid { grid-template-columns: 1fr; gap: 16px; }
     .evo-track { grid-template-columns: 1fr 1fr; }
     .code-grid { grid-template-columns: 1fr; }
     .tech-grid { grid-template-columns: 1fr 1fr; }
     footer { flex-direction: column; gap: 24px; text-align: center; }
   }
   @media (max-width: 600px) {
-    h1 { font-size: 52px; }
+    h1 { font-size: 42px; }
     .evo-track { grid-template-columns: 1fr; }
     .tech-grid { grid-template-columns: 1fr; }
     .stat-grid { grid-template-columns: 1fr; }
@@ -508,7 +517,7 @@
   .lang-ua { display: none; }
   html[lang="ua"] .lang-en { display: none; }
   html[lang="ua"] .lang-ua { display: initial; }
-  html[lang="ua"] p.lang-ua, html[lang="ua"] div.lang-ua, html[lang="ua"] span.lang-ua { display: block; }
+  html[lang="ua"] p.lang-ua, html[lang="ua"] div.lang-ua, html[lang="ua"] span.lang-ua, html[lang="ua"] h3.lang-ua { display: block; }
   html[lang="ua"] .nav-links span.lang-ua { display: inline; }
   
   .lang-btn {
@@ -534,6 +543,7 @@
   <a class="nav-logo" href="#">FQ·V10</a>
   <ul class="nav-links">
     <li><a href="#about"><span class="lang-en">About</span><span class="lang-ua">Про проєкт</span></a></li>
+    <li><a href="#architecture"><span class="lang-en">Architecture</span><span class="lang-ua">Архітектура</span></a></li>
     <li><a href="#evolution"><span class="lang-en">Evolution</span><span class="lang-ua">Еволюція</span></a></li>
     <li><a href="#code"><span class="lang-en">Code</span><span class="lang-ua">Код</span></a></li>
     <li><a href="#ai-report"><span class="lang-en">AI Report</span><span class="lang-ua">Звіти AI</span></a></li>
@@ -546,21 +556,21 @@
 <section id="hero">
   <div class="hero-badge">
     <span></span> 
-    <span class="lang-en">SYSTEM ONLINE — EUR/USD · GBP/USD</span>
-    <span class="lang-ua">СИСТЕМА ОНЛАЙН — EUR/USD · GBP/USD</span>
+    <span class="lang-en">SYSTEM ACTIVE — CHF/USD · EUR/USD · GBP/USD</span>
+    <span class="lang-ua">СИСТЕМА АКТИВНА — CHF/USD · EUR/USD · GBP/USD</span>
   </div>
   <h1>
     <div class="h1-quant">FOREX QUANT</div>
     <div class="h1-v10">V10</div>
   </h1>
   <p class="hero-sub">
-    <span class="lang-en">AI-Powered Forex Analysis &amp; Forecasting System</span>
-    <span class="lang-ua">AI-система аналізу та прогнозування валютних ринків</span>
+    <span class="lang-en">Hybrid Machine Learning &amp; AI Macro-Forecasting Core</span>
+    <span class="lang-ua">Гібридне ядро машинного навчання та макро-аналітики AI</span>
   </p>
   <div class="hero-btns">
     <a href="#about" class="btn-primary">
-      <span class="lang-en">View Project</span>
-      <span class="lang-ua">Переглянути проєкт</span>
+      <span class="lang-en">Explore Architecture</span>
+      <span class="lang-ua">Дослідити архітектуру</span>
     </a>
   </div>
 
@@ -611,35 +621,35 @@
     </h2>
     <div class="grid fade-in">
       <div class="lang-en">
-        <p>FOREX QUANT is a machine learning research project for analyzing and forecasting currency markets. The system combines classical technical analysis, ML models, and AI analytics to generate trading signals.</p>
-        <p>The project evolved from basic RSI/MACD analysis to a full AI pipeline with walk-forward validation, meta-labeling, and integration of large language models via the Groq API.</p>
-        <p>Automated reports are delivered daily via Telegram Bot — featuring forecasts, probabilities, and institutional analysis.</p>
+        <p>FOREX QUANT V10 represents a cutting-edge algorithmic system designed for multi-factor currency analysis. By unifying data engineering, high-performance tree boosting classification, and state-of-the-art LLM orchestration, the program automatically decodes complex price actions and macro risks.</p>
+        <p>The core framework extracts market structure via custom volatility and mathematical boundaries, training an ensemble classifier to establish daily statistical directional biases with high training accuracy. The system avoids noisy indicators, focusing strictly on high-alpha predictive logic.</p>
+        <p>Once mathematical parameters are defined, the pipeline securely prompts LLaMA-3.3-70B via the Groq infrastructure, pushing clear, highly-optimized analytical briefs and institutional charts straight to Telegram.</p>
       </div>
       <div class="lang-ua">
-        <p>FOREX QUANT — це дослідницький проєкт машинного навчання для аналізу та прогнозування валютних ринків. Система поєднує класичний технічний аналіз, ML-моделі та AI-аналітику для генерації торгових сигналів.</p>
-        <p>Проєкт пройшов шлях від базового RSI/MACD аналізу до повноцінного AI-пайплайну з walk-forward валідацією, meta-labeling та інтеграцією великих мовних моделей через Groq API.</p>
-        <p>Автоматичні звіти доставляються через Telegram Bot щоденно — з прогнозами, ймовірностями та інституційним аналізом.</p>
+        <p>FOREX QUANT V10 — це передова алгоритмічна система, розроблена для багатофакторного аналізу валютних ринків. Об'єднуючи інженерію даних, високопродуктивну класифікацію за допомогою градієнтного бустингу та оркестрацію сучасних LLM, програма автоматично розшифровує складну цінову динаміку та макроекономічні ризики.</p>
+        <p>Ядро системи виділяє структуру ринку за допомогою кастомних меж волатильності, навчаючи ансамблевий класифікатор для встановлення щоденних статистичних ймовірностей напрямку руху ціни. Алгоритм уникає слабких індикаторів, зосереджуючись виключно на логіці з високим показником альфи.</p>
+        <p>Після розрахунку математичних параметрів пайплайн передає структуровані метрики в модель LLaMA-3.3-70B через інфраструктуру Groq, миттєво відправляючи оптимізовані аналітичні звіти та професійні графіки в Telegram.</p>
       </div>
       <div class="stat-grid">
         <div class="stat-card">
-          <div class="stat-num">5</div>
+          <div class="stat-num">500</div>
           <div class="stat-label">
-            <span class="lang-en">Versions Built</span>
-            <span class="lang-ua">Версій створено</span>
+            <span class="lang-en">Boost Iterations</span>
+            <span class="lang-ua">Ітерацій Бустингу</span>
           </div>
         </div>
         <div class="stat-card">
-          <div class="stat-num">60+</div>
+          <div class="stat-num">2</div>
           <div class="stat-label">
-            <span class="lang-en">ML Features</span>
-            <span class="lang-ua">ML Ознак</span>
+            <span class="lang-en">Macro Streams</span>
+            <span class="lang-ua">Макро-потоки</span>
           </div>
         </div>
         <div class="stat-card">
-          <div class="stat-num">AI</div>
+          <div class="stat-num">70B</div>
           <div class="stat-label">
-            <span class="lang-en">Groq Integration</span>
-            <span class="lang-ua">Інтеграція Groq</span>
+            <span class="lang-en">LLaMA 3.3 Core</span>
+            <span class="lang-ua">Ядро LLaMA 3.3</span>
           </div>
         </div>
         <div class="stat-card">
@@ -649,6 +659,42 @@
             <span class="lang-ua">Валютні пари</span>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="architecture">
+  <div class="container">
+    <p class="sec-label fade-in">// MATHEMATICAL & CORE PIPELINE</p>
+    <h2 class="sec-title fade-in">
+      <span class="lang-en">Engine Architecture Deep-Dive</span>
+      <span class="lang-ua">Глибокий розбір архітектури двигуна</span>
+    </h2>
+    
+    <div class="arch-grid fade-in">
+      <div class="arch-card">
+        <span class="arch-tag">01. DATA ENGINE &amp; MACRO FLOW</span>
+        <h3 class="lang-en">Intermarket Sentiment Filters</h3>
+        <h3 class="lang-ua">Фільтри міжринкового настрою</h3>
+        <p class="lang-en">The core pipeline streams hourly market parameters using yfinance, dropping weekend data gaps. To complement pure technical data, it maps systemic market panic and bond dynamics by parsing the CBOE Volatility Index (^VIX) and the 10-Year Treasury Yield (^TNX) as structural market regime filters.</p>
+        <p class="lang-ua">Основний пайплайн завантажує погодинні параметри ринку за допомогою yfinance, автоматично очищуючи пропуски вихідних днів. Для доповнення технічних даних ядро оцінює паніку на ринках та динаміку облігацій, аналізуючи індекс волатильності CBOE (^VIX) та прибутковість 10-річних облігацій США (^TNX).</p>
+      </div>
+
+      <div class="arch-card">
+        <span class="arch-tag">02. MACHINE LEARNING YACORE</span>
+        <h3 class="lang-en">HistGradientBoosting Kernel</h3>
+        <h3 class="lang-ua">Ядро HistGradientBoosting</h3>
+        <p class="lang-en">Predictive directional probability is established via a high-performance tree ensemble. Features (RSI, ADX, ATR, MACD Histogram, along with 24-hour Support/Resistance channels) are fit against a math label looking forward 5 hours (shift-5) using a rigid 0.1% return magnitude threshold for directional classification.</p>
+        <p class="lang-ua">Прогнозна ймовірність напрямку розраховується за допомогою високопродуктивного ансамблю дерев. Ознаки (RSI, ADX, ATR, гістограма MACD, а також 24-годинні канали підтримки/опору) зіставляються з цільовою міткою з випередженням у 5 годин (shift-5) за суворим порогом зміни ціни в 0.1%.</p>
+      </div>
+
+      <div class="arch-card">
+        <span class="arch-tag">03. AI INTELLIGENCE SYSTEM</span>
+        <h3 class="lang-en">Groq LLM Synthesis</h3>
+        <h3 class="lang-ua">Синтез рішень через Groq LLM</h3>
+        <p class="lang-en">Mathematical outputs, probabilities, and market boundaries are vectorized and safely dispatched to the LLaMA-3.3-70B engine via ultra-low latency Groq APIs. The model acts as a professional institutional analyst, generating data-driven trend strength parameters, risk mitigations, and clean, concise execution actions.</p>
+        <p class="lang-ua">Математичні вихідні дані, ймовірності та межі ринку векторизуються та передаються в модель LLaMA-3.3-70B через API Groq із наднизькою затримкою. Модель діє як професійний інституційний аналітик, формуючи висновки про силу тренду, ризики та чіткі інструкції до дій без води.</p>
       </div>
     </div>
   </div>
@@ -750,20 +796,20 @@
         <div class="evo-ver">V10</div>
         <ul class="evo-feature">
           <li>
-            <span class="lang-en">AI via Groq LLM</span>
-            <span class="lang-ua">AI через Groq LLM</span>
+            <span class="lang-en">HistGradient + Macro</span>
+            <span class="lang-ua">HistGradient + Макро</span>
           </li>
           <li>
-            <span class="lang-en">Forecast engine</span>
-            <span class="lang-ua">Двигун прогнозування</span>
+            <span class="lang-en">VIX &amp; TNX Feature Streams</span>
+            <span class="lang-ua">Потоки ознак VIX та TNX</span>
           </li>
           <li>
-            <span class="lang-en">Auto Telegram AI</span>
-            <span class="lang-ua">Авто-Telegram AI</span>
+            <span class="lang-en">Groq LLaMA 3.3 Analytics</span>
+            <span class="lang-ua">Аналітика Groq LLaMA 3.3</span>
           </li>
           <li>
-            <span class="lang-en">Market regime detect</span>
-            <span class="lang-ua">Визначення режиму ринку</span>
+            <span class="lang-en">Automated Bot Deploy</span>
+            <span class="lang-ua">Автономний деплой бота</span>
           </li>
         </ul>
       </div>
@@ -878,12 +924,12 @@ model = <span class="cls">StackingClassifier</span>(
     <div class="report-terminal fade-in">
       <div class="term-header">
         <div class="code-dots"><span></span><span></span><span></span></div>
-        <span class="term-title">FOREX QUANT V10 — DAILY REPORT — EUR/USD</span>
+        <span class="term-title">FOREX QUANT V10 — DAILY REPORT — CHF/USD</span>
       </div>
       <div class="term-body">
         <div class="report-row">
           <span class="report-key">PAIR</span>
-          <span class="report-val neutral">EUR / USD</span>
+          <span class="report-val neutral">CHF / USD</span>
         </div>
         <div class="report-row">
           <span class="report-key">
@@ -891,8 +937,8 @@ model = <span class="cls">StackingClassifier</span>(
             <span class="lang-ua">ЙМОВІРНІСТЬ BUY</span>
           </span>
           <div class="prob-bar-wrap">
-            <span class="report-val buy">73.4%</span>
-            <div class="prob-bar buy-bar" style="width:73.4%"></div>
+            <span class="report-val buy">68.2%</span>
+            <div class="prob-bar buy-bar" style="width:68.2%"></div>
           </div>
         </div>
         <div class="report-row">
@@ -901,8 +947,8 @@ model = <span class="cls">StackingClassifier</span>(
             <span class="lang-ua">ЙМОВІРНІСТЬ SELL</span>
           </span>
           <div class="prob-bar-wrap">
-            <span class="report-val sell">26.6%</span>
-            <div class="prob-bar sell-bar" style="width:26.6%"></div>
+            <span class="report-val sell">14.3%</span>
+            <div class="prob-bar sell-bar" style="width:14.3%"></div>
           </div>
         </div>
         <div class="report-row">
@@ -913,39 +959,24 @@ model = <span class="cls">StackingClassifier</span>(
           <span class="report-val buy">▲ BUY</span>
         </div>
         <div class="report-row">
-          <span class="report-key">
-            <span class="lang-en">MARKET REGIME</span>
-            <span class="lang-ua">РЕЖИМ РИНКУ</span>
-          </span>
-          <span class="report-val neutral">
-            <span class="lang-en">TRENDING BULLISH</span>
-            <span class="lang-ua">ВИСХІДНИЙ ТРЕНД</span>
-          </span>
+          <span class="report-key">VIX INDEX (VOLATILITY)</span>
+          <span class="report-val neutral">14.25</span>
+        </div>
+        <div class="report-row">
+          <span class="report-key">TNX (10Y TREASURY YIELD)</span>
+          <span class="report-val neutral">4.22%</span>
         </div>
         <div class="report-row">
           <span class="report-key">
-            <span class="lang-en">INSTITUTIONAL BIAS</span>
-            <span class="lang-ua">ІНСТИТУЦІЙНИЙ НАСТРІЙ</span>
+            <span class="lang-en">TRAINING ACCURACY</span>
+            <span class="lang-ua">ТОЧНІСТЬ НАВЧАННЯ</span>
           </span>
-          <span class="report-val neutral">
-            <span class="lang-en">LONG (COT DATA)</span>
-            <span class="lang-ua">LONG (ДАНІ COT)</span>
-          </span>
-        </div>
-        <div class="report-row">
-          <span class="report-key">
-            <span class="lang-en">CONFIDENCE</span>
-            <span class="lang-ua">ВПЕВНЕНІСТЬ</span>
-          </span>
-          <span class="report-val buy">
-            <span class="lang-en">HIGH</span>
-            <span class="lang-ua">ВИСОКА</span>
-          </span>
+          <span class="report-val buy">89.4%</span>
         </div>
         <div class="ai-text-block">
           <div class="prompt">🤖 AI ANALYSIS (Groq / LLaMA-3.3):</div>
-          <span class="lang-en">EUR/USD shows stable upward momentum. The BUY probability at 73.4% is backed by bullish MACD divergence and RSI above 58. Key support level: 1.0820. Resistance: 1.0960. COT data indicates institutional accumulation of long positions. Recommendation: BUY on retest of 1.0850 with a stop below 1.0800.</span>
-          <span class="lang-ua">EUR/USD демонструє стійкий висхідний імпульс. Ймовірність BUY на рівні 73.4% підкріплена позитивним розходженням MACD та RSI вище 58. Ключовий рівень підтримки: 1.0820. Опір: 1.0960. COT-дані вказують на інституційне накопичення довгих позицій. Рекомендація: BUY при ретесті 1.0850 зі стопом нижче 1.0800.</span>
+          <span class="lang-en">CHF/USD shows stable upward momentum. The BUY probability at 68.2% is backed by bullish MACD divergence and RSI above 58. Key support level: 1.1240. Resistance: 1.1410. Macro context via VIX at 14.25 indicates a stable environment, while steady TNX values prevent aggressive capital outflows. Recommendation: BUY on short-term pullbacks.</span>
+          <span class="lang-ua">CHF/USD демонструє стійкий висхідний імпульс. Ймовірність BUY на рівні 68.2% підкріплена позитивним розходженням MACD та RSI вище 58. Ключовий рівень підтримки: 1.1240. Опір: 1.1410. Макроконтекст через індекс VIX на рівні 14.25 вказує на стабільність середовища, тоді як стійкі значення TNX стримують відтік капіталу. Рекомендація: BUY на короткострокових відкатах.</span>
         </div>
       </div>
     </div>
@@ -962,15 +993,15 @@ model = <span class="cls">StackingClassifier</span>(
     <div class="chart-container fade-in">
       <div class="chart-topbar">
         <div>
-          <span class="chart-pair">EUR/USD</span>
+          <span class="chart-pair">CHF/USD</span>
           <span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-left:12px">
-            <span class="lang-en">H4 · DAILY FORECAST</span>
-            <span class="lang-ua">H4 · ЩОДЕННИЙ ПРОГНОЗ</span>
+            <span class="lang-en">H1 · ENGINE CLASSIC FORECAST</span>
+            <span class="lang-ua">H1 · КЛАСИЧНИЙ ПРОГНОЗ ЯДРА</span>
           </span>
         </div>
         <div>
-          <span class="chart-price">1.0891</span>
-          <span class="chart-change">+0.42%</span>
+          <span class="chart-price">1.1345</span>
+          <span class="chart-change">+0.38%</span>
         </div>
       </div>
       <div class="chart-svg-wrap">
@@ -997,10 +1028,10 @@ model = <span class="cls">StackingClassifier</span>(
           <line x1="440"  y1="0" x2="440"  y2="300" stroke="#0f1f32" stroke-width=".5"/>
           <line x1="660"  y1="0" x2="660"  y2="300" stroke="#0f1f32" stroke-width=".5"/>
           <line x1="880"  y1="0" x2="880"  y2="300" stroke="#0f1f32" stroke-width=".5"/>
-          <text x="8" y="63"  font-family="Space Mono" font-size="9" fill="#3d5270">1.0960</text>
-          <text x="8" y="123" font-family="Space Mono" font-size="9" fill="#3d5270">1.0920</text>
-          <text x="8" y="183" font-family="Space Mono" font-size="9" fill="#3d5270">1.0880</text>
-          <text x="8" y="243" font-family="Space Mono" font-size="9" fill="#3d5270">1.0840</text>
+          <text x="8" y="63"  font-family="Space Mono" font-size="9" fill="#3d5270">1.1410</text>
+          <text x="8" y="123" font-family="Space Mono" font-size="9" fill="#3d5270">1.1360</text>
+          <text x="8" y="183" font-family="Space Mono" font-size="9" fill="#3d5270">1.1310</text>
+          <text x="8" y="243" font-family="Space Mono" font-size="9" fill="#3d5270">1.1260</text>
           <g id="candles">
             <rect x="50"  y="180" width="14" height="50" fill="#00e676" opacity=".85"/>
             <line x1="57" y1="170" x2="57" y2="235" stroke="#00e676" stroke-width="1.5"/>
@@ -1049,7 +1080,7 @@ model = <span class="cls">StackingClassifier</span>(
           </g>
           <path d="M50,210 C100,190 150,165 200,148 C250,131 300,118 350,110 C400,102 450,90 500,82 C550,74 600,66 680,52"
             fill="none" stroke="#ffd740" stroke-width="1.5" opacity=".7"/>
-          <text x="690" y="52" font-family="Space Mono" font-size="9" fill="#ffd740">MA 20</text>
+          <text x="690" y="52" font-family="Space Mono" font-size="9" fill="#ffd740">MA 50</text>
           <path d="M50,230 C150,200 250,155 350,120 C450,85 550,72 680,54 L680,300 L50,300 Z"
             fill="url(#pa)"/>
           <path d="M50,230 C150,200 250,155 350,120 C450,85 550,72 680,54"
@@ -1060,20 +1091,20 @@ model = <span class="cls">StackingClassifier</span>(
             fill="none" stroke="#00d4ff" stroke-width="1.5" stroke-dasharray="7,4" filter="url(#glow2)"/>
           <line x1="680" y1="0" x2="680" y2="300" stroke="#00d4ff" stroke-width=".8" stroke-dasharray="3,3" opacity=".4"/>
           <text x="685" y="22" font-family="Space Mono" font-size="10" fill="#00d4ff" opacity=".9">
-            <tspan class="lang-en">FORECAST ZONE</tspan>
-            <tspan class="lang-ua">ЗОНА ПРОГНОЗУ</tspan>
+            <tspan class="lang-en">FORECAST ZONE (T+5H)</tspan>
+            <tspan class="lang-ua">ЗОНА ПРОГНОЗУ (T+5Г)</tspan>
           </text>
           <polygon points="297,95 291,107 303,107" fill="#00e676"/>
           <text x="284" y="88" font-family="Space Mono" font-size="9" fill="#00e676">BUY</text>
           <polygon points="417,138 411,126 423,126" fill="#ff3d5a"/>
           <text x="405" y="152" font-family="Space Mono" font-size="9" fill="#ff3d5a">SELL</text>
           <line x1="50" y1="54" x2="680" y2="54" stroke="#00e676" stroke-width=".5" stroke-dasharray="4,4" opacity=".3"/>
-          <text x="690" y="58" font-family="Space Mono" font-size="9" fill="#00e676">1.0891</text>
-          <text x="50"  y="295" font-family="Space Mono" font-size="8" fill="#3d5270">Jan</text>
-          <text x="220" y="295" font-family="Space Mono" font-size="8" fill="#3d5270">Feb</text>
-          <text x="440" y="295" font-family="Space Mono" font-size="8" fill="#3d5270">Mar</text>
-          <text x="660" y="295" font-family="Space Mono" font-size="8" fill="#3d5270">Apr</text>
-          <text x="860" y="295" font-family="Space Mono" font-size="8" fill="#00d4ff">May →</text>
+          <text x="690" y="58" font-family="Space Mono" font-size="9" fill="#00e676">1.1345</text>
+          <text x="50"  y="295" font-family="Space Mono" font-size="8" fill="#3d5270">60d</text>
+          <text x="220" y="295" font-family="Space Mono" font-size="8" fill="#3d5270">40d</text>
+          <text x="440" y="295" font-family="Space Mono" font-size="8" fill="#3d5270">20d</text>
+          <text x="660" y="295" font-family="Space Mono" font-size="8" fill="#3d5270">Last H</text>
+          <text x="860" y="295" font-family="Space Mono" font-size="8" fill="#00d4ff">Forecast +5h →</text>
         </svg>
       </div>
     </div>
@@ -1092,67 +1123,64 @@ model = <span class="cls">StackingClassifier</span>(
         <div class="tech-icon">🐍</div>
         <div class="tech-name">Python 3.11</div>
         <div class="tech-desc">
-          <span class="lang-en">Core language for all ML pipelines, data processing and automation scripts.</span>
-          <span class="lang-ua">Основна мова для всіх ML-пайплайнів, обробки даних та скриптів автоматизації.</span>
+          <span class="lang-en">Core architectural logic for pipeline management, intermarket processing, and mathematical labeling.</span>
+          <span class="lang-ua">Основна архітектурна логіка для керування пайплайном, міжринкової обробки та математичного маркування.</span>
         </div>
       </div>
       <div class="tech-card">
-        <div class="tech-icon">🤖</div>
-        <div class="tech-name">
-          <span class="lang-en">Machine Learning</span>
-          <span class="lang-ua">Машинне навчання</span>
-        </div>
+        <div class="tech-icon">🌲</div>
+        <div class="tech-name">HistGradientBoosting</div>
         <div class="tech-desc">
-          <span class="lang-en">XGBoost, LightGBM, Random Forest — stacking ensemble with meta-labeling.</span>
-          <span class="lang-ua">XGBoost, LightGBM, Random Forest — ансамбль стекінгу з мета-маркуванням.</span>
+          <span class="lang-en">Advanced native tree classifier with built-in missing value routing, optimized for highly dynamic data arrays.</span>
+          <span class="lang-ua">Просунутий вбудований класифікатор дерев з оптимізованою маршрутизацією для високодинамічних масивів даних.</span>
         </div>
       </div>
       <div class="tech-card">
         <div class="tech-icon">⚗️</div>
         <div class="tech-name">scikit-learn</div>
         <div class="tech-desc">
-          <span class="lang-en">Walk-forward cross-validation, feature selection, preprocessing pipelines.</span>
-          <span class="lang-ua">Кросс-валідація Walk-forward, відбір ознак, пайплайни передобробки.</span>
+          <span class="lang-en">Ensemble architectures, mathematical performance monitoring and predictive scoring loops.</span>
+          <span class="lang-ua">Ансамблеві архітектури, математичний моніторинг ефективності та цикли прогнозного скорингу.</span>
         </div>
       </div>
       <div class="tech-card">
         <div class="tech-icon">🧠</div>
-        <div class="tech-name">Groq API</div>
+        <div class="tech-name">Groq LLaMA-3.3</div>
         <div class="tech-desc">
-          <span class="lang-en">LLaMA-3.3 70B for AI market analysis, institutional bias detection and trade narratives.</span>
-          <span class="lang-ua">LLaMA-3.3 70B для AI-аналізу ринку, визначення інституційного настрою та описів угод.</span>
+          <span class="lang-en">70B Parameter foundation core generating contextual narrative reasoning, filtering raw telemetry data.</span>
+          <span class="lang-ua">Базове ядро на 70 мільярдів параметрів, що генерує контекстні аналітичні описи та фільтрує сиру телеметрію.</span>
         </div>
       </div>
       <div class="tech-card">
         <div class="tech-icon">📲</div>
         <div class="tech-name">Telegram Bot API</div>
         <div class="tech-desc">
-          <span class="lang-en">Automated daily reports with signals, probabilities and AI commentary sent to channel.</span>
-          <span class="lang-ua">Автоматичні щоденні звіти з сигналами, ймовірностями та коментарями AI, що надсилаються в канал.</span>
+          <span class="lang-en">Instant asynchronous payload broadcasting delivering analytical logs and real-time visualization artifacts.</span>
+          <span class="lang-ua">Миттєве асинхронне мовлення, що передає аналітичні логи та артефакти візуалізації у реальному часі.</span>
         </div>
       </div>
       <div class="tech-card">
         <div class="tech-icon">📈</div>
         <div class="tech-name">yfinance</div>
         <div class="tech-desc">
-          <span class="lang-en">Historical OHLCV data fetching for EUR/USD and GBP/USD pairs.</span>
-          <span class="lang-ua">Завантаження історичних OHLCV даних для валютних пар EUR/USD та GBP/USD.</span>
+          <span class="lang-en">Telemetry sourcing for currency rates and systemic global asset trackers (^VIX, ^TNX).</span>
+          <span class="lang-ua">Джерело телеметрії для валютних курсів та системних глобальних трекерів активів (^VIX, ^TNX).</span>
         </div>
       </div>
       <div class="tech-card">
         <div class="tech-icon">🐼</div>
-        <div class="tech-name">pandas / numpy</div>
+        <div class="tech-name">pandas &amp; ta</div>
         <div class="tech-desc">
-          <span class="lang-en">60+ engineered features: indicators, lag features, rolling statistics and regime detection.</span>
-          <span class="lang-ua">60+ згенерованих ознак: індикатори, лагові ознаки, ковзна статистика та визначення режиму ринку.</span>
+          <span class="lang-en">Algorithmic extraction of complex vectors: RSI, ADX, ATR, MACD-Diff, and rolling high/low channel margins.</span>
+          <span class="lang-ua">Алгоритмічне виділення складних векторів: RSI, ADX, ATR, MACD-Diff та рухомих меж каналів High/Low.</span>
         </div>
       </div>
       <div class="tech-card">
         <div class="tech-icon">📊</div>
         <div class="tech-name">matplotlib</div>
         <div class="tech-desc">
-          <span class="lang-en">Chart generation for backtest results, equity curves and feature importance plots.</span>
-          <span class="lang-ua">Генерація графіків для результатів бектестів, кривих капіталу (equity) та важливості ознак.</span>
+          <span class="lang-en">Automated clean layout rendering for active price structures and dynamic technical boundaries.</span>
+          <span class="lang-ua">Автоматичний рендеринг чистих макетів для активних цінових структур та динамічних технічних меж.</span>
         </div>
       </div>
     </div>
@@ -1223,34 +1251,6 @@ model = <span class="cls">StackingClassifier</span>(
         </div>
         <span class="rm-tag tag-research">Research</span>
       </div>
-      <div class="rm-item">
-        <div class="rm-num">05</div>
-        <div>
-          <div class="rm-title">
-            <span class="lang-en">Web Platform</span>
-            <span class="lang-ua">Повноцінна веб-платформа</span>
-          </div>
-          <div class="rm-desc">
-            <span class="lang-en">Full-scale React platform with user accounts, subscriptions, and personalized signals</span>
-            <span class="lang-ua">Повноцінна React-платформа з акаунтами користувачів, підписками та персональними сигналами</span>
-          </div>
-        </div>
-        <span class="rm-tag tag-planned">Planned</span>
-      </div>
-      <div class="rm-item">
-        <div class="rm-num">06</div>
-        <div>
-          <div class="rm-title">
-            <span class="lang-en">Mobile App</span>
-            <span class="lang-ua">Мобільний додаток</span>
-          </div>
-          <div class="rm-desc">
-            <span class="lang-en">iOS / Android application with push notifications and mobile dashboard</span>
-            <span class="lang-ua">iOS / Android додаток з push-сповіщеннями та мобільним дашбордом</span>
-          </div>
-        </div>
-        <span class="rm-tag tag-research">Research</span>
-      </div>
     </div>
   </div>
 </section>
@@ -1265,7 +1265,7 @@ model = <span class="cls">StackingClassifier</span>(
   </div>
   <div class="footer-links">
     <a href="#about"><span class="lang-en">About</span><span class="lang-ua">Про проєкт</span></a>
-    <a href="#evolution"><span class="lang-en">Evolution</span><span class="lang-ua">Еволюція</span></a>
+    <a href="#architecture"><span class="lang-en">Architecture</span><span class="lang-ua">Архітектура</span></a>
     <a href="#roadmap"><span class="lang-en">Roadmap</span><span class="lang-ua">Плани</span></a>
   </div>
 </footer>
