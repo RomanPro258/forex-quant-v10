@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FOREX QUANT V10 — AI Forex Analysis System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #070b12;
+    --bg2: #0d1421;
+    --bg3: #111927;
+    --blue: #2563ff;
+    --blue-glow: #2563ffaa;
+    --cyan: #00d4ff;
+    --green: #00e676;
+    --red: #ff3d5a;
+    --text: #e8edf5;
+    --muted: #5a6a82;
+    --border: #1c2a3f;
+    --card: #0f1823;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── GRID BACKGROUND ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(37,99,255,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(37,99,255,.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  section, nav, footer { position: relative; z-index: 1; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 60px;
+    background: rgba(7,11,18,.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+  }
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--cyan);
+    letter-spacing: 2px;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 120px 40px 80px;
+    overflow: hidden;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 16px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--cyan);
+    letter-spacing: 2px;
+    margin-bottom: 32px;
+    background: rgba(0,212,255,.05);
+  }
+  .hero-badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 1.5s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+  h1 {
+    font-size: clamp(52px, 9vw, 110px);
+    font-weight: 800;
+    line-height: .95;
+    letter-spacing: -2px;
+    margin-bottom: 8px;
+  }
+  .h1-quant { color: var(--text); }
+  .h1-v10 {
+    background: linear-gradient(135deg, var(--cyan), var(--blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin: 24px 0 48px;
+  }
+
+  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .btn-primary {
+    padding: 14px 36px;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    letter-spacing: .5px;
+    transition: background .2s, transform .15s;
+    box-shadow: 0 0 30px var(--blue-glow);
+  }
+  .btn-primary:hover { background: #1a4fe0; transform: translateY(-2px); }
+  .btn-outline {
+    padding: 14px 36px;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    letter-spacing: .5px;
+    transition: border-color .2s, color .2s, transform .15s;
+  }
+  .btn-outline:hover { border-color: var(--cyan); color: var(--cyan); transform: translateY(-2px); }
+
+  /* fake chart in hero */
+  .hero-chart {
+    margin-top: 80px;
+    width: 100%;
+    max-width: 900px;
+    height: 160px;
+    position: relative;
+  }
+  .hero-chart svg { width: 100%; height: 100%; }
+
+  /* ── SECTION HEADER ── */
+  .sec-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--cyan);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .sec-title {
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1px;
+  }
+  .sec-title span { color: var(--cyan); }
+
+  section { padding: 100px 60px; }
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  /* ── ABOUT ── */
+  #about .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-top: 60px;
+    align-items: start;
+  }
+  #about p {
+    color: #8a9ab5;
+    line-height: 1.8;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 28px;
+  }
+  .stat-card:first-child { border-radius: 8px 0 0 0; }
+  .stat-card:nth-child(2) { border-radius: 0 8px 0 0; }
+  .stat-card:nth-child(3) { border-radius: 0 0 0 8px; }
+  .stat-card:last-child { border-radius: 0 0 8px 0; }
+  .stat-num {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--cyan);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-label { font-size: 12px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+
+  /* ── EVOLUTION ── */
+  #evolution { background: var(--bg2); }
+  .evo-track {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+    position: relative;
+  }
+  .evo-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 32px 24px;
+    position: relative;
+    transition: border-color .3s, transform .3s;
+    cursor: default;
+  }
+  .evo-card:hover { border-color: var(--blue); transform: translateY(-4px); }
+  .evo-card.active { border-color: var(--cyan); }
+  .evo-card.active::after {
+    content: 'CURRENT';
+    position: absolute;
+    top: -1px; right: -1px;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    background: var(--cyan);
+    color: var(--bg);
+    padding: 3px 8px;
+  }
+  .evo-ver {
+    font-family: 'Space Mono', monospace;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--blue);
+    margin-bottom: 16px;
+  }
+  .evo-card.active .evo-ver { color: var(--cyan); }
+  .evo-feature {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.9;
+    font-family: 'Space Mono', monospace;
+  }
+  .evo-feature li { list-style: none; padding-left: 14px; position: relative; }
+  .evo-feature li::before { content: '›'; position: absolute; left: 0; color: var(--blue); }
+  .evo-card.active .evo-feature li::before { color: var(--cyan); }
+
+  /* ── CODE SHOWCASE ── */
+  .code-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 60px;
+  }
+  .code-block {
+    background: #050911;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .code-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 20px;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+  }
+  .code-dots { display: flex; gap: 6px; }
+  .code-dots span { width: 10px; height: 10px; border-radius: 50%; }
+  .code-dots span:nth-child(1) { background: #ff3d5a; }
+  .code-dots span:nth-child(2) { background: #ffd740; }
+  .code-dots span:nth-child(3) { background: #00e676; }
+  .code-fname {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .code-lang {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--blue);
+    letter-spacing: 1px;
+  }
+  pre {
+    padding: 24px 20px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+    overflow-x: auto;
+    color: #c9d8f0;
+  }
+  .kw { color: #7c9ef7; }
+  .fn { color: var(--cyan); }
+  .str { color: #a8d08d; }
+  .cmt { color: #3d5270; font-style: italic; }
+  .num { color: #f7c87c; }
+  .cls { color: #f0c070; }
+
+  /* ── AI REPORT ── */
+  #ai-report { background: var(--bg2); }
+  .report-terminal {
+    margin-top: 60px;
+    max-width: 720px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(37,99,255,.15);
+  }
+  .term-header {
+    background: #0c1520;
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .term-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--cyan);
+    letter-spacing: 2px;
+  }
+  .term-body { padding: 32px; background: #060d17; }
+
+  .report-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #0f1f32;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+  }
+  .report-row:last-child { border-bottom: none; }
+  .report-key { color: var(--muted); }
+  .report-val { font-weight: 700; }
+  .buy { color: var(--green); }
+  .sell { color: var(--red); }
+  .neutral { color: var(--cyan); }
+
+  .prob-bar-wrap { width: 200px; }
+  .prob-bar {
+    height: 6px;
+    border-radius: 3px;
+    margin-top: 4px;
+  }
+  .prob-bar.buy-bar { background: linear-gradient(90deg, var(--green), #00b060); }
+  .prob-bar.sell-bar { background: linear-gradient(90deg, var(--red), #cc0040); }
+
+  .ai-text-block {
+    margin-top: 24px;
+    padding: 20px;
+    background: #080f1c;
+    border: 1px solid #1c2d45;
+    border-radius: 4px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: #7a9ab8;
+    line-height: 1.9;
+  }
+  .ai-text-block .prompt { color: var(--blue); margin-bottom: 12px; }
+
+  /* ── CHART ── */
+  #charts .chart-container {
+    margin-top: 60px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .chart-topbar {
+    background: var(--card);
+    padding: 16px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .chart-pair {
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text);
+  }
+  .chart-price {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--green);
+  }
+  .chart-change {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--green);
+    margin-left: 8px;
+  }
+  .chart-svg-wrap { background: #060d17; padding: 8px 0; }
+
+  /* ── TECHNOLOGIES ── */
+  #technologies .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+  .tech-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 28px 24px;
+    transition: border-color .25s, background .25s;
+  }
+  .tech-card:hover { border-color: var(--blue); background: #121f33; }
+  .tech-icon { font-size: 28px; margin-bottom: 14px; }
+  .tech-name { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+  .tech-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  /* ── ROADMAP ── */
+  #roadmap { background: var(--bg2); }
+  .roadmap-list {
+    margin-top: 60px;
+    display: grid;
+    gap: 2px;
+  }
+  .rm-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 24px 32px;
+    display: flex; align-items: center; gap: 24px;
+    transition: border-color .25s;
+  }
+  .rm-item:hover { border-color: var(--blue); }
+  .rm-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--blue);
+    letter-spacing: 2px;
+    min-width: 36px;
+  }
+  .rm-title { font-weight: 700; font-size: 16px; }
+  .rm-desc { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .rm-tag {
+    margin-left: auto;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .tag-soon { background: rgba(37,99,255,.15); color: var(--blue); border: 1px solid rgba(37,99,255,.3); }
+  .tag-planned { background: rgba(0,212,255,.08); color: var(--cyan); border: 1px solid rgba(0,212,255,.2); }
+  .tag-research { background: rgba(255,215,64,.08); color: #ffd740; border: 1px solid rgba(255,215,64,.2); }
+
+  /* ── GITHUB ── */
+  #github {
+    text-align: center;
+    padding: 120px 60px;
+  }
+  .gh-card {
+    display: inline-block;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 60px 80px;
+    margin-top: 40px;
+    max-width: 700px;
+    width: 100%;
+  }
+  .gh-icon { font-size: 48px; margin-bottom: 20px; }
+  .gh-desc { color: var(--muted); font-size: 15px; margin: 16px 0 36px; line-height: 1.7; }
+  .gh-stats { display: flex; gap: 40px; justify-content: center; margin-bottom: 36px; }
+  .gh-stat-val {
+    font-family: 'Space Mono', monospace;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--cyan);
+  }
+  .gh-stat-lbl { font-size: 12px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 48px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--bg);
+  }
+  .footer-logo {
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--cyan);
+    letter-spacing: 2px;
+  }
+  .footer-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color .2s; }
+  .footer-links a:hover { color: var(--cyan); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    section { padding: 80px 24px; }
+    #about .grid { grid-template-columns: 1fr; gap: 40px; }
+    .evo-track { grid-template-columns: 1fr 1fr; }
+    .code-grid { grid-template-columns: 1fr; }
+    .tech-grid { grid-template-columns: 1fr 1fr; }
+    footer { flex-direction: column; gap: 24px; text-align: center; }
+    .gh-card { padding: 40px 24px; }
+    .gh-stats { gap: 24px; }
+  }
+  @media (max-width: 600px) {
+    h1 { font-size: 52px; }
+    .evo-track { grid-template-columns: 1fr; }
+    .tech-grid { grid-template-columns: 1fr; }
+    .stat-grid { grid-template-columns: 1fr; }
+  }
+
+  /* scroll fade-in */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">FQ·V10</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#evolution">Evolution</a></li>
+    <li><a href="#code">Code</a></li>
+    <li><a href="#ai-report">AI Report</a></li>
+    <li><a href="#charts">Charts</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#github">GitHub</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-badge"><span></span> SYSTEM ONLINE — EUR/USD · GBP/USD · USD/JPY</div>
+  <h1>
+    <div class="h1-quant">FOREX QUANT</div>
+    <div class="h1-v10">V10</div>
+  </h1>
+  <p class="hero-sub">AI-Powered Forex Analysis &amp; Forecasting System</p>
+  <div class="hero-btns">
+    <a href="#about" class="btn-primary">View Project</a>
+    <a href="https://github.com/" target="_blank" class="btn-outline">GitHub ↗</a>
+  </div>
+
+  <!-- Animated SVG chart -->
+  <div class="hero-chart">
+    <svg viewBox="0 0 900 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#2563ff" stop-opacity=".35"/>
+          <stop offset="100%" stop-color="#2563ff" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="fg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#00d4ff" stop-opacity=".25"/>
+          <stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/>
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <!-- price area fill -->
+      <path d="M0,120 L60,110 L120,95 L180,105 L240,88 L300,75 L360,82 L420,60 L480,68 L540,45 L600,52 L660,38 L720,48 L780,30 L840,42 L900,28 L900,160 L0,160 Z" fill="url(#cg)"/>
+      <!-- price line -->
+      <path d="M0,120 L60,110 L120,95 L180,105 L240,88 L300,75 L360,82 L420,60 L480,68 L540,45 L600,52 L660,38 L720,48 L780,30 L840,42 L900,28"
+        fill="none" stroke="#2563ff" stroke-width="2" filter="url(#glow)"/>
+      <!-- forecast dashed -->
+      <path d="M780,30 L840,18 L900,8"
+        fill="none" stroke="#00d4ff" stroke-width="1.5" stroke-dasharray="6,4" opacity=".8"/>
+      <!-- forecast fill -->
+      <path d="M780,30 L840,18 L900,8 L900,160 L780,160 Z" fill="url(#fg)"/>
+      <!-- forecast dot -->
+      <circle cx="780" cy="30" r="5" fill="#00d4ff" filter="url(#glow)"/>
+      <!-- signal dots -->
+      <circle cx="300" cy="75" r="5" fill="#00e676"/>
+      <circle cx="540" cy="45" r="5" fill="#00e676"/>
+      <circle cx="180" cy="105" r="5" fill="#ff3d5a"/>
+      <circle cx="360" cy="82" r="5" fill="#ff3d5a"/>
+      <!-- labels -->
+      <text x="295" y="65" font-family="Space Mono" font-size="9" fill="#00e676">BUY</text>
+      <text x="175" y="118" font-family="Space Mono" font-size="9" fill="#ff3d5a">SELL</text>
+      <text x="785" y="22" font-family="Space Mono" font-size="9" fill="#00d4ff">FORECAST</text>
+      <!-- horizontal grid lines -->
+      <line x1="0" y1="40" x2="900" y2="40" stroke="#1c2a3f" stroke-width=".5"/>
+      <line x1="0" y1="80" x2="900" y2="80" stroke="#1c2a3f" stroke-width=".5"/>
+      <line x1="0" y1="120" x2="900" y2="120" stroke="#1c2a3f" stroke-width=".5"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <p class="sec-label fade-in">// PROJECT OVERVIEW</p>
+    <h2 class="sec-title fade-in">About <span>FOREX QUANT</span></h2>
+    <div class="grid fade-in">
+      <div>
+        <p>FOREX QUANT — це дослідницький проєкт машинного навчання для аналізу та прогнозування валютних ринків. Система поєднує класичний технічний аналіз, ML-моделі та AI-аналітику для генерації торгових сигналів.</p>
+        <p>Проєкт пройшов шлях від базового RSI/MACD аналізу до повноцінного AI-пайплайну з walk-forward валідацією, meta-labeling та інтеграцією великих мовних моделей через Groq API.</p>
+        <p>Автоматичні звіти доставляються через Telegram Bot щоденно — з прогнозами, ймовірностями та інституційним аналізом.</p>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-num">5</div>
+          <div class="stat-label">Versions Built</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">60+</div>
+          <div class="stat-label">ML Features</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">AI</div>
+          <div class="stat-label">Groq Integration</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Currency Pairs</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVOLUTION -->
+<section id="evolution">
+  <div class="container">
+    <p class="sec-label fade-in">// SYSTEM HISTORY</p>
+    <h2 class="sec-title fade-in">Evolution of the <span>System</span></h2>
+    <div class="evo-track fade-in">
+      <div class="evo-card">
+        <div class="evo-ver">V6</div>
+        <ul class="evo-feature">
+          <li>Basic ML pipeline</li>
+          <li>RSI / MACD features</li>
+          <li>Telegram reports</li>
+          <li>Simple backtesting</li>
+        </ul>
+      </div>
+      <div class="evo-card">
+        <div class="evo-ver">V7</div>
+        <ul class="evo-feature">
+          <li>Random Forest model</li>
+          <li>Feature importance</li>
+          <li>Candlestick patterns</li>
+          <li>Multi-timeframe</li>
+        </ul>
+      </div>
+      <div class="evo-card">
+        <div class="evo-ver">V8</div>
+        <ul class="evo-feature">
+          <li>Walk-forward validation</li>
+          <li>Triple barrier labels</li>
+          <li>Realistic backtesting</li>
+          <li>Sharpe ratio metrics</li>
+        </ul>
+      </div>
+      <div class="evo-card">
+        <div class="evo-ver">V9</div>
+        <ul class="evo-feature">
+          <li>Stacking ensemble</li>
+          <li>Meta-labeling</li>
+          <li>Institutional logic</li>
+          <li>SMOTE balancing</li>
+        </ul>
+      </div>
+      <div class="evo-card active">
+        <div class="evo-ver">V10</div>
+        <ul class="evo-feature">
+          <li>AI via Groq LLM</li>
+          <li>Forecast engine</li>
+          <li>Auto Telegram AI</li>
+          <li>Market regime detect</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CODE SHOWCASE -->
+<section id="code">
+  <div class="container">
+    <p class="sec-label fade-in">// IMPLEMENTATION</p>
+    <h2 class="sec-title fade-in">Code <span>Showcase</span></h2>
+    <div class="code-grid fade-in">
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-fname">features.py</span>
+          <span class="code-lang">PYTHON</span>
+        </div>
+        <pre><span class="cmt"># Feature Engineering Pipeline</span>
+<span class="kw">def</span> <span class="fn">build_features</span>(df):
+    <span class="cmt"># Technical indicators</span>
+    df[<span class="str">'rsi_14'</span>] = <span class="fn">compute_rsi</span>(df, <span class="num">14</span>)
+    df[<span class="str">'macd'</span>], df[<span class="str">'signal'</span>] = <span class="fn">compute_macd</span>(df)
+    df[<span class="str">'bb_upper'</span>], df[<span class="str">'bb_lower'</span>] = <span class="fn">bollinger</span>(df, <span class="num">20</span>)
+    df[<span class="str">'atr_14'</span>] = <span class="fn">atr</span>(df, <span class="num">14</span>)
+
+    <span class="cmt"># Market regime features</span>
+    df[<span class="str">'trend'</span>] = <span class="fn">detect_regime</span>(df[<span class="str">'close'</span>])
+    df[<span class="str">'volatility'</span>] = df[<span class="str">'close'</span>].<span class="fn">rolling</span>(<span class="num">20</span>).<span class="fn">std</span>()
+
+    <span class="kw">return</span> df.<span class="fn">dropna</span>()</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-fname">ai_prompt.py</span>
+          <span class="code-lang">PYTHON</span>
+        </div>
+        <pre><span class="cmt"># AI Analysis via Groq API</span>
+<span class="kw">def</span> <span class="fn">ai_analyze</span>(signal_data):
+    prompt = <span class="str">f"""
+    You are a Forex analyst.
+    Pair: {signal_data['pair']}
+    BUY prob: {signal_data['buy_prob']:.1%}
+    SELL prob: {signal_data['sell_prob']:.1%}
+    Regime: {signal_data['regime']}
+
+    Provide: institutional bias,
+    key levels, trade recommendation.
+    """</span>
+    response = groq.<span class="fn">chat</span>(prompt)
+    <span class="kw">return</span> response.content</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-fname">model.py</span>
+          <span class="code-lang">PYTHON</span>
+        </div>
+        <pre><span class="cmt"># Stacking Ensemble Model</span>
+<span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> <span class="cls">StackingClassifier</span>
+
+estimators = [
+    (<span class="str">'rf'</span>,  <span class="cls">RandomForestClassifier</span>(<span class="num">200</span>)),
+    (<span class="str">'xgb'</span>, <span class="cls">XGBClassifier</span>(<span class="num">300</span>)),
+    (<span class="str">'lgb'</span>, <span class="cls">LGBMClassifier</span>(<span class="num">200</span>)),
+]
+
+model = <span class="cls">StackingClassifier</span>(
+    estimators=estimators,
+    final_estimator=<span class="cls">LogisticRegression</span>(),
+    cv=<span class="num">5</span>, passthrough=<span class="kw">True</span>
+)</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-fname">telegram_bot.py</span>
+          <span class="code-lang">PYTHON</span>
+        </div>
+        <pre><span class="cmt"># Auto Telegram Report</span>
+<span class="kw">async def</span> <span class="fn">send_report</span>(signal, ai_text):
+    emoji = <span class="str">"🟢"</span> <span class="kw">if</span> signal[<span class="str">'action'</span>]==<span class="str">'BUY'</span> <span class="kw">else</span> <span class="str">"🔴"</span>
+    msg = (
+        <span class="str">f"{emoji} **{signal['pair']}**\n"</span>
+        <span class="str">f"Signal: {signal['action']}\n"</span>
+        <span class="str">f"BUY:  {signal['buy_prob']:.1%}\n"</span>
+        <span class="str">f"SELL: {signal['sell_prob']:.1%}\n\n"</span>
+        <span class="str">f"🤖 AI: {ai_text}"</span>
+    )
+    <span class="kw">await</span> bot.<span class="fn">send_message</span>(CHAT_ID, msg)</pre>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- AI REPORT -->
+<section id="ai-report">
+  <div class="container">
+    <p class="sec-label fade-in">// LIVE OUTPUT</p>
+    <h2 class="sec-title fade-in">AI <span>Report</span> Example</h2>
+    <div class="report-terminal fade-in">
+      <div class="term-header">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <span class="term-title">FOREX QUANT V10 — DAILY REPORT — EUR/USD</span>
+      </div>
+      <div class="term-body">
+        <div class="report-row">
+          <span class="report-key">PAIR</span>
+          <span class="report-val neutral">EUR / USD</span>
+        </div>
+        <div class="report-row">
+          <span class="report-key">BUY PROBABILITY</span>
+          <div class="prob-bar-wrap">
+            <span class="report-val buy">73.4%</span>
+            <div class="prob-bar buy-bar" style="width:73.4%"></div>
+          </div>
+        </div>
+        <div class="report-row">
+          <span class="report-key">SELL PROBABILITY</span>
+          <div class="prob-bar-wrap">
+            <span class="report-val sell">26.6%</span>
+            <div class="prob-bar sell-bar" style="width:26.6%"></div>
+          </div>
+        </div>
+        <div class="report-row">
+          <span class="report-key">SIGNAL</span>
+          <span class="report-val buy">▲ BUY</span>
+        </div>
+        <div class="report-row">
+          <span class="report-key">MARKET REGIME</span>
+          <span class="report-val neutral">TRENDING BULLISH</span>
+        </div>
+        <div class="report-row">
+          <span class="report-key">INSTITUTIONAL BIAS</span>
+          <span class="report-val neutral">LONG (COT DATA)</span>
+        </div>
+        <div class="report-row">
+          <span class="report-key">CONFIDENCE</span>
+          <span class="report-val buy">HIGH</span>
+        </div>
+        <div class="ai-text-block">
+          <div class="prompt">🤖 AI ANALYSIS (Groq / LLaMA-3.3):</div>
+          EUR/USD демонструє стійкий висхідний імпульс. Ймовірність BUY на рівні 73.4% підкріплена позитивним розходженням MACD та RSI вище 58. Ключовий рівень підтримки: 1.0820. Опір: 1.0960. COT-дані вказують на інституційне накопичення довгих позицій. Рекомендація: BUY при ретесті 1.0850 зі стопом нижче 1.0800.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHARTS -->
+<section id="charts">
+  <div class="container">
+    <p class="sec-label fade-in">// VISUALISATION</p>
+    <h2 class="sec-title fade-in">Chart <span>Analysis</span></h2>
+    <div class="chart-container fade-in">
+      <div class="chart-topbar">
+        <div>
+          <span class="chart-pair">EUR/USD</span>
+          <span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-left:12px">H4 · DAILY FORECAST</span>
+        </div>
+        <div>
+          <span class="chart-price">1.0891</span>
+          <span class="chart-change">+0.42%</span>
+        </div>
+      </div>
+      <div class="chart-svg-wrap">
+        <svg viewBox="0 0 1100 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+          <defs>
+            <linearGradient id="pa" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2563ff" stop-opacity=".2"/>
+              <stop offset="100%" stop-color="#2563ff" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="fa2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#00d4ff" stop-opacity=".18"/>
+              <stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/>
+            </linearGradient>
+            <filter id="glow2">
+              <feGaussianBlur stdDeviation="2.5" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <!-- grid -->
+          <line x1="0" y1="60"  x2="1100" y2="60"  stroke="#0f1f32" stroke-width="1"/>
+          <line x1="0" y1="120" x2="1100" y2="120" stroke="#0f1f32" stroke-width="1"/>
+          <line x1="0" y1="180" x2="1100" y2="180" stroke="#0f1f32" stroke-width="1"/>
+          <line x1="0" y1="240" x2="1100" y2="240" stroke="#0f1f32" stroke-width="1"/>
+          <!-- vertical grid -->
+          <line x1="220"  y1="0" x2="220"  y2="300" stroke="#0f1f32" stroke-width=".5"/>
+          <line x1="440"  y1="0" x2="440"  y2="300" stroke="#0f1f32" stroke-width=".5"/>
+          <line x1="660"  y1="0" x2="660"  y2="300" stroke="#0f1f32" stroke-width=".5"/>
+          <line x1="880"  y1="0" x2="880"  y2="300" stroke="#0f1f32" stroke-width=".5"/>
+          <!-- price labels -->
+          <text x="8" y="63"  font-family="Space Mono" font-size="9" fill="#3d5270">1.0960</text>
+          <text x="8" y="123" font-family="Space Mono" font-size="9" fill="#3d5270">1.0920</text>
+          <text x="8" y="183" font-family="Space Mono" font-size="9" fill="#3d5270">1.0880</text>
+          <text x="8" y="243" font-family="Space Mono" font-size="9" fill="#3d5270">1.0840</text>
+          <!-- candles -->
+          <g id="candles">
+            <!-- bullish candles -->
+            <rect x="50"  y="180" width="14" height="50" fill="#00e676" opacity=".85"/>
+            <line x1="57" y1="170" x2="57" y2="235" stroke="#00e676" stroke-width="1.5"/>
+            <rect x="80"  y="160" width="14" height="40" fill="#00e676" opacity=".85"/>
+            <line x1="87" y1="148" x2="87" y2="205" stroke="#00e676" stroke-width="1.5"/>
+            <!-- bearish -->
+            <rect x="110" y="155" width="14" height="30" fill="#ff3d5a" opacity=".85"/>
+            <line x1="117" y1="148" x2="117" y2="192" stroke="#ff3d5a" stroke-width="1.5"/>
+            <!-- bullish -->
+            <rect x="140" y="148" width="14" height="25" fill="#00e676" opacity=".85"/>
+            <line x1="147" y1="138" x2="147" y2="178" stroke="#00e676" stroke-width="1.5"/>
+            <rect x="170" y="138" width="14" height="30" fill="#00e676" opacity=".85"/>
+            <line x1="177" y1="128" x2="177" y2="175" stroke="#00e676" stroke-width="1.5"/>
+            <rect x="200" y="130" width="14" height="22" fill="#00e676" opacity=".85"/>
+            <line x1="207" y1="120" x2="207" y2="158" stroke="#00e676" stroke-width="1.5"/>
+            <!-- bearish cluster -->
+            <rect x="230" y="128" width="14" height="18" fill="#ff3d5a" opacity=".85"/>
+            <line x1="237" y1="120" x2="237" y2="152" stroke="#ff3d5a" stroke-width="1.5"/>
+            <rect x="260" y="125" width="14" height="20" fill="#ff3d5a" opacity=".85"/>
+            <line x1="267" y1="115" x2="267" y2="152" stroke="#ff3d5a" stroke-width="1.5"/>
+            <rect x="290" y="120" width="14" height="14" fill="#00e676" opacity=".85"/>
+            <line x1="297" y1="112" x2="297" y2="140" stroke="#00e676" stroke-width="1.5"/>
+            <rect x="320" y="112" width="14" height="18" fill="#00e676" opacity=".85"/>
+            <line x1="327" y1="102" x2="327" y2="136" stroke="#00e676" stroke-width="1.5"/>
+            <rect x="350" y="108" width="14" height="20" fill="#00e676" opacity=".85"/>
+            <line x1="357" y1="98" x2="357" y2="134" stroke="#00e676" stroke-width="1.5"/>
+            <rect x="380" y="100" width="14" height="16" fill="#00e676" opacity=".85"/>
+            <line x1="387" y1="90" x2="387" y2="122" stroke="#00e676" stroke-width="1.5"/>
+            <rect x="410" y="95" width="14" height="20" fill="#ff3d5a" opacity=".85"/>
+            <line x1="417" y1="86" x2="417" y2="122" stroke="#ff3d5a" stroke-width="1.5"/>
+            <rect x="440" y="90" width="14" height="18" fill="#00e676" opacity=".85"/>
+            <line x1="447" y1="80" x2="447" y2="114" stroke="#00e676" stroke-width="1.5"/>
+            <rect x="470" y="82" width="14" height="20" fill="#00e676" opacity=".85"/>
+            <line x1="477" y1="72" x2="477" y2="108" stroke="#00e676" stroke-width="1.5"/>
+            <rect x="500" y="78" width="14" height="16" fill="#00e676" opacity=".85"/>
+            <line x1="507" y1="68" x2="507" y2="100" stroke="#00e676" stroke-width="1.5"/>
+            <rect x="530" y="74" width="14" height="18" fill="#ff3d5a" opacity=".85"/>
+            <line x1="537" y1="64" x2="537" y2="98" stroke="#ff3d5a" stroke-width="1.5"/>
+            <rect x="560" y="70" width="14" height="14" fill="#00e676" opacity=".85"/>
+            <line x1="567" y1="60" x2="567" y2="90" stroke="#00e676" stroke-width="1.5"/>
+            <rect x="590" y="65" width="14" height="16" fill="#00e676" opacity=".85"/>
+            <line x1="597" y1="55" x2="597" y2="87" stroke="#00e676" stroke-width="1.5"/>
+            <rect x="620" y="62" width="14" height="14" fill="#ff3d5a" opacity=".85"/>
+            <line x1="627" y1="52" x2="627" y2="82" stroke="#ff3d5a" stroke-width="1.5"/>
+            <rect x="650" y="58" width="14" height="14" fill="#00e676" opacity=".85"/>
+            <line x1="657" y1="48" x2="657" y2="78" stroke="#00e676" stroke-width="1.5"/>
+            <rect x="680" y="54" width="14" height="12" fill="#00e676" opacity=".85"/>
+            <line x1="687" y1="44" x2="687" y2="72" stroke="#00e676" stroke-width="1.5"/>
+          </g>
+          <!-- MA line -->
+          <path d="M50,210 C100,190 150,165 200,148 C250,131 300,118 350,110 C400,102 450,90 500,82 C550,74 600,66 680,52"
+            fill="none" stroke="#ffd740" stroke-width="1.5" opacity=".7"/>
+          <text x="690" y="52" font-family="Space Mono" font-size="9" fill="#ffd740">MA 20</text>
+          <!-- price area -->
+          <path d="M50,230 C150,200 250,155 350,120 C450,85 550,72 680,54 L680,300 L50,300 Z"
+            fill="url(#pa)"/>
+          <path d="M50,230 C150,200 250,155 350,120 C450,85 550,72 680,54"
+            fill="none" stroke="#2563ff" stroke-width="1" opacity=".4"/>
+          <!-- forecast area (from 680) -->
+          <path d="M680,54 L760,42 L850,36 L950,28 L1080,20 L1080,300 L680,300 Z"
+            fill="url(#fa2)"/>
+          <path d="M680,54 L760,42 L850,36 L950,28 L1080,20"
+            fill="none" stroke="#00d4ff" stroke-width="1.5" stroke-dasharray="7,4" filter="url(#glow2)"/>
+          <!-- forecast divider -->
+          <line x1="680" y1="0" x2="680" y2="300" stroke="#00d4ff" stroke-width=".8" stroke-dasharray="3,3" opacity=".4"/>
+          <text x="685" y="22" font-family="Space Mono" font-size="10" fill="#00d4ff" opacity=".9">FORECAST ZONE</text>
+          <!-- BUY signal marker -->
+          <polygon points="297,95 291,107 303,107" fill="#00e676"/>
+          <text x="284" y="88" font-family="Space Mono" font-size="9" fill="#00e676">BUY</text>
+          <!-- SELL signal -->
+          <polygon points="417,138 411,126 423,126" fill="#ff3d5a"/>
+          <text x="405" y="152" font-family="Space Mono" font-size="9" fill="#ff3d5a">SELL</text>
+          <!-- current price line -->
+          <line x1="50" y1="54" x2="680" y2="54" stroke="#00e676" stroke-width=".5" stroke-dasharray="4,4" opacity=".3"/>
+          <text x="690" y="58" font-family="Space Mono" font-size="9" fill="#00e676">1.0891</text>
+          <!-- time labels -->
+          <text x="50"  y="295" font-family="Space Mono" font-size="8" fill="#3d5270">Jan</text>
+          <text x="220" y="295" font-family="Space Mono" font-size="8" fill="#3d5270">Feb</text>
+          <text x="440" y="295" font-family="Space Mono" font-size="8" fill="#3d5270">Mar</text>
+          <text x="660" y="295" font-family="Space Mono" font-size="8" fill="#3d5270">Apr</text>
+          <text x="860" y="295" font-family="Space Mono" font-size="8" fill="#00d4ff">May →</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECHNOLOGIES -->
+<section id="technologies">
+  <div class="container">
+    <p class="sec-label fade-in">// TECH STACK</p>
+    <h2 class="sec-title fade-in">Built With</h2>
+    <div class="tech-grid fade-in">
+      <div class="tech-card">
+        <div class="tech-icon">🐍</div>
+        <div class="tech-name">Python 3.11</div>
+        <div class="tech-desc">Core language for all ML pipelines, data processing and automation scripts.</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">🤖</div>
+        <div class="tech-name">Machine Learning</div>
+        <div class="tech-desc">XGBoost, LightGBM, Random Forest — stacking ensemble with meta-labeling.</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">⚗️</div>
+        <div class="tech-name">scikit-learn</div>
+        <div class="tech-desc">Walk-forward cross-validation, feature selection, preprocessing pipelines.</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">🧠</div>
+        <div class="tech-name">Groq API</div>
+        <div class="tech-desc">LLaMA-3.3 70B for AI market analysis, institutional bias detection and trade narratives.</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">📲</div>
+        <div class="tech-name">Telegram Bot API</div>
+        <div class="tech-desc">Automated daily reports with signals, probabilities and AI commentary sent to channel.</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">📈</div>
+        <div class="tech-name">yfinance</div>
+        <div class="tech-desc">Historical OHLCV data fetching for EUR/USD, GBP/USD and USD/JPY pairs.</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">🐼</div>
+        <div class="tech-name">pandas / numpy</div>
+        <div class="tech-desc">60+ engineered features: indicators, lag features, rolling statistics and regime detection.</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">📊</div>
+        <div class="tech-name">matplotlib</div>
+        <div class="tech-desc">Chart generation for backtest results, equity curves and feature importance plots.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="container">
+    <p class="sec-label fade-in">// WHAT'S NEXT</p>
+    <h2 class="sec-title fade-in">Project <span>Roadmap</span></h2>
+    <div class="roadmap-list fade-in">
+      <div class="rm-item">
+        <div class="rm-num">01</div>
+        <div>
+          <div class="rm-title">Live Dashboard</div>
+          <div class="rm-desc">Real-time web UI з відображенням сигналів, прогнозів та equity curve</div>
+        </div>
+        <span class="rm-tag tag-soon">Soon</span>
+      </div>
+      <div class="rm-item">
+        <div class="rm-num">02</div>
+        <div>
+          <div class="rm-title">Real-Time Signals</div>
+          <div class="rm-desc">Streaming сигнали з затримкою менше 1 секунди через WebSocket</div>
+        </div>
+        <span class="rm-tag tag-soon">Soon</span>
+      </div>
+      <div class="rm-item">
+        <div class="rm-num">03</div>
+        <div>
+          <div class="rm-title">Binance API Integration</div>
+          <div class="rm-desc">Розширення на crypto-ринки: BTC/USDT, ETH/USDT з тими ж ML-пайплайнами</div>
+        </div>
+        <span class="rm-tag tag-planned">Planned</span>
+      </div>
+      <div class="rm-item">
+        <div class="rm-num">04</div>
+        <div>
+          <div class="rm-title">Reinforcement Learning</div>
+          <div class="rm-desc">RL-агент для оптимізації точок входу та динамічного position sizing</div>
+        </div>
+        <span class="rm-tag tag-research">Research</span>
+      </div>
+      <div class="rm-item">
+        <div class="rm-num">05</div>
+        <div>
+          <div class="rm-title">Web Platform</div>
+          <div class="rm-desc">Повноцінна React-платформа з акаунтами, підписками та персональними сигналами</div>
+        </div>
+        <span class="rm-tag tag-planned">Planned</span>
+      </div>
+      <div class="rm-item">
+        <div class="rm-num">06</div>
+        <div>
+          <div class="rm-title">Mobile App</div>
+          <div class="rm-desc">iOS / Android додаток з push-сповіщеннями та мобільним дашбордом</div>
+        </div>
+        <span class="rm-tag tag-research">Research</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GITHUB -->
+<section id="github">
+  <div class="container">
+    <p class="sec-label">// OPEN SOURCE</p>
+    <h2 class="sec-title">View on <span>GitHub</span></h2>
+    <div class="gh-card fade-in">
+      <div class="gh-icon">⚙️</div>
+      <h3 style="font-size:22px;font-weight:800;">forex-quant-v10</h3>
+      <p class="gh-desc">AI-Powered Forex Analysis System. Machine learning pipeline for currency market forecasting with automated Telegram reports and Groq LLM integration.</p>
+      <div class="gh-stats">
+        <div>
+          <div class="gh-stat-val">5</div>
+          <div class="gh-stat-lbl">Versions</div>
+        </div>
+        <div>
+          <div class="gh-stat-val">60+</div>
+          <div class="gh-stat-lbl">Features</div>
+        </div>
+        <div>
+          <div class="gh-stat-val">3</div>
+          <div class="gh-stat-lbl">Pairs</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a href="https://github.com/" target="_blank" class="btn-primary">View Source Code ↗</a>
+        <a href="https://github.com/" target="_blank" class="btn-outline">⭐ Star on GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">FOREX QUANT V10</div>
+    <div class="footer-sub">AI Forex Research Project · Built with Python &amp; ML</div>
+  </div>
+  <div class="footer-links">
+    <a href="#about">About</a>
+    <a href="#evolution">Evolution</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="https://github.com/" target="_blank">GitHub ↗</a>
+  </div>
+</footer>
+
+<script>
+  // Scroll fade-in
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
