@@ -66,7 +66,7 @@
     letter-spacing: 2px;
     text-decoration: none;
   }
-  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links { display: flex; gap: 36px; list-style: none; align-items: center; margin-right: auto; margin-left: 40px;}
   .nav-links a {
     color: var(--muted);
     text-decoration: none;
@@ -473,32 +473,6 @@
   .tag-planned { background: rgba(0,212,255,.08); color: var(--cyan); border: 1px solid rgba(0,212,255,.2); }
   .tag-research { background: rgba(255,215,64,.08); color: #ffd740; border: 1px solid rgba(255,215,64,.2); }
 
-  /* ── GITHUB ── */
-  #github {
-    text-align: center;
-    padding: 120px 60px;
-  }
-  .gh-card {
-    display: inline-block;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 60px 80px;
-    margin-top: 40px;
-    max-width: 700px;
-    width: 100%;
-  }
-  .gh-icon { font-size: 48px; margin-bottom: 20px; }
-  .gh-desc { color: var(--muted); font-size: 15px; margin: 16px 0 36px; line-height: 1.7; }
-  .gh-stats { display: flex; gap: 40px; justify-content: center; margin-bottom: 36px; }
-  .gh-stat-val {
-    font-family: 'Space Mono', monospace;
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--cyan);
-  }
-  .gh-stat-lbl { font-size: 12px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
-
   /* ── FOOTER ── */
   footer {
     border-top: 1px solid var(--border);
@@ -528,8 +502,6 @@
     .code-grid { grid-template-columns: 1fr; }
     .tech-grid { grid-template-columns: 1fr 1fr; }
     footer { flex-direction: column; gap: 24px; text-align: center; }
-    .gh-card { padding: 40px 24px; }
-    .gh-stats { gap: 24px; }
   }
   @media (max-width: 600px) {
     h1 { font-size: 52px; }
@@ -545,38 +517,58 @@
     transition: opacity .6s ease, transform .6s ease;
   }
   .fade-in.visible { opacity: 1; transform: none; }
+
+  /* ── LANGUAGE SWITCHER CSS ── */
+  .lang-ua { display: none; }
+  html[lang="ua"] .lang-en { display: none; }
+  html[lang="ua"] .lang-ua { display: initial; }
+  html[lang="ua"] p.lang-ua, html[lang="ua"] div.lang-ua { display: block; }
+  .lang-btn {
+    background: transparent;
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .lang-btn:hover {
+    background: rgba(0, 212, 255, 0.1);
+  }
 </style>
 </head>
-<body>
+<body lang="en">
 
-<!-- NAV -->
 <nav>
   <a class="nav-logo" href="#">FQ·V10</a>
   <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#evolution">Evolution</a></li>
-    <li><a href="#code">Code</a></li>
-    <li><a href="#ai-report">AI Report</a></li>
-    <li><a href="#charts">Charts</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#github">GitHub</a></li>
+    <li><a href="#about"><span class="lang-en">About</span><span class="lang-ua">Про проєкт</span></a></li>
+    <li><a href="#evolution"><span class="lang-en">Evolution</span><span class="lang-ua">Еволюція</span></a></li>
+    <li><a href="#code"><span class="lang-en">Code</span><span class="lang-ua">Код</span></a></li>
+    <li><a href="#ai-report"><span class="lang-en">AI Report</span><span class="lang-ua">Звіти AI</span></a></li>
+    <li><a href="#charts"><span class="lang-en">Charts</span><span class="lang-ua">Графіки</span></a></li>
+    <li><a href="#roadmap"><span class="lang-en">Roadmap</span><span class="lang-ua">Плани</span></a></li>
   </ul>
+  <button id="lang-switch" class="lang-btn">UKR</button>
 </nav>
 
-<!-- HERO -->
 <section id="hero">
-  <div class="hero-badge"><span></span> SYSTEM ONLINE — EUR/USD · GBP/USD · USD/JPY</div>
+  <div class="hero-badge"><span></span> <span class="lang-en">SYSTEM ONLINE</span><span class="lang-ua">СИСТЕМА ОНЛАЙН</span> — EUR/USD · GBP/USD · USD/JPY</div>
   <h1>
     <div class="h1-quant">FOREX QUANT</div>
     <div class="h1-v10">V10</div>
   </h1>
-  <p class="hero-sub">AI-Powered Forex Analysis &amp; Forecasting System</p>
+  <p class="hero-sub">
+    <span class="lang-en">AI-Powered Forex Analysis &amp; Forecasting System</span>
+    <span class="lang-ua">AI-система аналізу та прогнозування валютних ринків</span>
+  </p>
   <div class="hero-btns">
-    <a href="#about" class="btn-primary">View Project</a>
-    <a href="https://github.com/" target="_blank" class="btn-outline">GitHub ↗</a>
+    <a href="#about" class="btn-primary"><span class="lang-en">View Project</span><span class="lang-ua">Переглянути проєкт</span></a>
   </div>
 
-  <!-- Animated SVG chart -->
   <div class="hero-chart">
     <svg viewBox="0 0 900 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -593,28 +585,20 @@
           <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
         </filter>
       </defs>
-      <!-- price area fill -->
       <path d="M0,120 L60,110 L120,95 L180,105 L240,88 L300,75 L360,82 L420,60 L480,68 L540,45 L600,52 L660,38 L720,48 L780,30 L840,42 L900,28 L900,160 L0,160 Z" fill="url(#cg)"/>
-      <!-- price line -->
       <path d="M0,120 L60,110 L120,95 L180,105 L240,88 L300,75 L360,82 L420,60 L480,68 L540,45 L600,52 L660,38 L720,48 L780,30 L840,42 L900,28"
         fill="none" stroke="#2563ff" stroke-width="2" filter="url(#glow)"/>
-      <!-- forecast dashed -->
       <path d="M780,30 L840,18 L900,8"
         fill="none" stroke="#00d4ff" stroke-width="1.5" stroke-dasharray="6,4" opacity=".8"/>
-      <!-- forecast fill -->
       <path d="M780,30 L840,18 L900,8 L900,160 L780,160 Z" fill="url(#fg)"/>
-      <!-- forecast dot -->
       <circle cx="780" cy="30" r="5" fill="#00d4ff" filter="url(#glow)"/>
-      <!-- signal dots -->
       <circle cx="300" cy="75" r="5" fill="#00e676"/>
       <circle cx="540" cy="45" r="5" fill="#00e676"/>
       <circle cx="180" cy="105" r="5" fill="#ff3d5a"/>
       <circle cx="360" cy="82" r="5" fill="#ff3d5a"/>
-      <!-- labels -->
       <text x="295" y="65" font-family="Space Mono" font-size="9" fill="#00e676">BUY</text>
       <text x="175" y="118" font-family="Space Mono" font-size="9" fill="#ff3d5a">SELL</text>
       <text x="785" y="22" font-family="Space Mono" font-size="9" fill="#00d4ff">FORECAST</text>
-      <!-- horizontal grid lines -->
       <line x1="0" y1="40" x2="900" y2="40" stroke="#1c2a3f" stroke-width=".5"/>
       <line x1="0" y1="80" x2="900" y2="80" stroke="#1c2a3f" stroke-width=".5"/>
       <line x1="0" y1="120" x2="900" y2="120" stroke="#1c2a3f" stroke-width=".5"/>
@@ -622,13 +606,17 @@
   </div>
 </section>
 
-<!-- ABOUT -->
 <section id="about">
   <div class="container">
     <p class="sec-label fade-in">// PROJECT OVERVIEW</p>
-    <h2 class="sec-title fade-in">About <span>FOREX QUANT</span></h2>
+    <h2 class="sec-title fade-in"><span class="lang-en">About</span><span class="lang-ua">Про</span> <span>FOREX QUANT</span></h2>
     <div class="grid fade-in">
-      <div>
+      <div class="lang-en">
+        <p>FOREX QUANT is a machine learning research project for analyzing and forecasting currency markets. The system combines classical technical analysis, ML models, and AI analytics to generate trading signals.</p>
+        <p>The project evolved from basic RSI/MACD analysis to a full AI pipeline with walk-forward validation, meta-labeling, and integration of large language models via the Groq API.</p>
+        <p>Automated reports are delivered daily via Telegram Bot — featuring forecasts, probabilities, and institutional analysis.</p>
+      </div>
+      <div class="lang-ua">
         <p>FOREX QUANT — це дослідницький проєкт машинного навчання для аналізу та прогнозування валютних ринків. Система поєднує класичний технічний аналіз, ML-моделі та AI-аналітику для генерації торгових сигналів.</p>
         <p>Проєкт пройшов шлях від базового RSI/MACD аналізу до повноцінного AI-пайплайну з walk-forward валідацією, meta-labeling та інтеграцією великих мовних моделей через Groq API.</p>
         <p>Автоматичні звіти доставляються через Telegram Bot щоденно — з прогнозами, ймовірностями та інституційним аналізом.</p>
@@ -636,26 +624,25 @@
       <div class="stat-grid">
         <div class="stat-card">
           <div class="stat-num">5</div>
-          <div class="stat-label">Versions Built</div>
+          <div class="stat-label"><span class="lang-en">Versions Built</span><span class="lang-ua">Версій створено</span></div>
         </div>
         <div class="stat-card">
           <div class="stat-num">60+</div>
-          <div class="stat-label">ML Features</div>
+          <div class="stat-label"><span class="lang-en">ML Features</span><span class="lang-ua">ML Ознак</span></div>
         </div>
         <div class="stat-card">
           <div class="stat-num">AI</div>
-          <div class="stat-label">Groq Integration</div>
+          <div class="stat-label"><span class="lang-en">Groq Integration</span><span class="lang-ua">Інтеграція Groq</span></div>
         </div>
         <div class="stat-card">
           <div class="stat-num">3</div>
-          <div class="stat-label">Currency Pairs</div>
+          <div class="stat-label"><span class="lang-en">Currency Pairs</span><span class="lang-ua">Валютні пари</span></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- EVOLUTION -->
 <section id="evolution">
   <div class="container">
     <p class="sec-label fade-in">// SYSTEM HISTORY</p>
@@ -710,7 +697,6 @@
   </div>
 </section>
 
-<!-- CODE SHOWCASE -->
 <section id="code">
   <div class="container">
     <p class="sec-label fade-in">// IMPLEMENTATION</p>
@@ -805,7 +791,6 @@ model = <span class="cls">StackingClassifier</span>(
   </div>
 </section>
 
-<!-- AI REPORT -->
 <section id="ai-report">
   <div class="container">
     <p class="sec-label fade-in">// LIVE OUTPUT</p>
@@ -859,7 +844,6 @@ model = <span class="cls">StackingClassifier</span>(
   </div>
 </section>
 
-<!-- CHARTS -->
 <section id="charts">
   <div class="container">
     <p class="sec-label fade-in">// VISUALISATION</p>
@@ -891,39 +875,31 @@ model = <span class="cls">StackingClassifier</span>(
               <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
           </defs>
-          <!-- grid -->
           <line x1="0" y1="60"  x2="1100" y2="60"  stroke="#0f1f32" stroke-width="1"/>
           <line x1="0" y1="120" x2="1100" y2="120" stroke="#0f1f32" stroke-width="1"/>
           <line x1="0" y1="180" x2="1100" y2="180" stroke="#0f1f32" stroke-width="1"/>
           <line x1="0" y1="240" x2="1100" y2="240" stroke="#0f1f32" stroke-width="1"/>
-          <!-- vertical grid -->
           <line x1="220"  y1="0" x2="220"  y2="300" stroke="#0f1f32" stroke-width=".5"/>
           <line x1="440"  y1="0" x2="440"  y2="300" stroke="#0f1f32" stroke-width=".5"/>
           <line x1="660"  y1="0" x2="660"  y2="300" stroke="#0f1f32" stroke-width=".5"/>
           <line x1="880"  y1="0" x2="880"  y2="300" stroke="#0f1f32" stroke-width=".5"/>
-          <!-- price labels -->
           <text x="8" y="63"  font-family="Space Mono" font-size="9" fill="#3d5270">1.0960</text>
           <text x="8" y="123" font-family="Space Mono" font-size="9" fill="#3d5270">1.0920</text>
           <text x="8" y="183" font-family="Space Mono" font-size="9" fill="#3d5270">1.0880</text>
           <text x="8" y="243" font-family="Space Mono" font-size="9" fill="#3d5270">1.0840</text>
-          <!-- candles -->
           <g id="candles">
-            <!-- bullish candles -->
             <rect x="50"  y="180" width="14" height="50" fill="#00e676" opacity=".85"/>
             <line x1="57" y1="170" x2="57" y2="235" stroke="#00e676" stroke-width="1.5"/>
             <rect x="80"  y="160" width="14" height="40" fill="#00e676" opacity=".85"/>
             <line x1="87" y1="148" x2="87" y2="205" stroke="#00e676" stroke-width="1.5"/>
-            <!-- bearish -->
             <rect x="110" y="155" width="14" height="30" fill="#ff3d5a" opacity=".85"/>
             <line x1="117" y1="148" x2="117" y2="192" stroke="#ff3d5a" stroke-width="1.5"/>
-            <!-- bullish -->
             <rect x="140" y="148" width="14" height="25" fill="#00e676" opacity=".85"/>
             <line x1="147" y1="138" x2="147" y2="178" stroke="#00e676" stroke-width="1.5"/>
             <rect x="170" y="138" width="14" height="30" fill="#00e676" opacity=".85"/>
             <line x1="177" y1="128" x2="177" y2="175" stroke="#00e676" stroke-width="1.5"/>
             <rect x="200" y="130" width="14" height="22" fill="#00e676" opacity=".85"/>
             <line x1="207" y1="120" x2="207" y2="158" stroke="#00e676" stroke-width="1.5"/>
-            <!-- bearish cluster -->
             <rect x="230" y="128" width="14" height="18" fill="#ff3d5a" opacity=".85"/>
             <line x1="237" y1="120" x2="237" y2="152" stroke="#ff3d5a" stroke-width="1.5"/>
             <rect x="260" y="125" width="14" height="20" fill="#ff3d5a" opacity=".85"/>
@@ -957,33 +933,25 @@ model = <span class="cls">StackingClassifier</span>(
             <rect x="680" y="54" width="14" height="12" fill="#00e676" opacity=".85"/>
             <line x1="687" y1="44" x2="687" y2="72" stroke="#00e676" stroke-width="1.5"/>
           </g>
-          <!-- MA line -->
           <path d="M50,210 C100,190 150,165 200,148 C250,131 300,118 350,110 C400,102 450,90 500,82 C550,74 600,66 680,52"
             fill="none" stroke="#ffd740" stroke-width="1.5" opacity=".7"/>
           <text x="690" y="52" font-family="Space Mono" font-size="9" fill="#ffd740">MA 20</text>
-          <!-- price area -->
           <path d="M50,230 C150,200 250,155 350,120 C450,85 550,72 680,54 L680,300 L50,300 Z"
             fill="url(#pa)"/>
           <path d="M50,230 C150,200 250,155 350,120 C450,85 550,72 680,54"
             fill="none" stroke="#2563ff" stroke-width="1" opacity=".4"/>
-          <!-- forecast area (from 680) -->
           <path d="M680,54 L760,42 L850,36 L950,28 L1080,20 L1080,300 L680,300 Z"
             fill="url(#fa2)"/>
           <path d="M680,54 L760,42 L850,36 L950,28 L1080,20"
             fill="none" stroke="#00d4ff" stroke-width="1.5" stroke-dasharray="7,4" filter="url(#glow2)"/>
-          <!-- forecast divider -->
           <line x1="680" y1="0" x2="680" y2="300" stroke="#00d4ff" stroke-width=".8" stroke-dasharray="3,3" opacity=".4"/>
           <text x="685" y="22" font-family="Space Mono" font-size="10" fill="#00d4ff" opacity=".9">FORECAST ZONE</text>
-          <!-- BUY signal marker -->
           <polygon points="297,95 291,107 303,107" fill="#00e676"/>
           <text x="284" y="88" font-family="Space Mono" font-size="9" fill="#00e676">BUY</text>
-          <!-- SELL signal -->
           <polygon points="417,138 411,126 423,126" fill="#ff3d5a"/>
           <text x="405" y="152" font-family="Space Mono" font-size="9" fill="#ff3d5a">SELL</text>
-          <!-- current price line -->
           <line x1="50" y1="54" x2="680" y2="54" stroke="#00e676" stroke-width=".5" stroke-dasharray="4,4" opacity=".3"/>
           <text x="690" y="58" font-family="Space Mono" font-size="9" fill="#00e676">1.0891</text>
-          <!-- time labels -->
           <text x="50"  y="295" font-family="Space Mono" font-size="8" fill="#3d5270">Jan</text>
           <text x="220" y="295" font-family="Space Mono" font-size="8" fill="#3d5270">Feb</text>
           <text x="440" y="295" font-family="Space Mono" font-size="8" fill="#3d5270">Mar</text>
@@ -995,7 +963,6 @@ model = <span class="cls">StackingClassifier</span>(
   </div>
 </section>
 
-<!-- TECHNOLOGIES -->
 <section id="technologies">
   <div class="container">
     <p class="sec-label fade-in">// TECH STACK</p>
@@ -1045,7 +1012,6 @@ model = <span class="cls">StackingClassifier</span>(
   </div>
 </section>
 
-<!-- ROADMAP -->
 <section id="roadmap">
   <div class="container">
     <p class="sec-label fade-in">// WHAT'S NEXT</p>
@@ -1103,38 +1069,6 @@ model = <span class="cls">StackingClassifier</span>(
   </div>
 </section>
 
-<!-- GITHUB -->
-<section id="github">
-  <div class="container">
-    <p class="sec-label">// OPEN SOURCE</p>
-    <h2 class="sec-title">View on <span>GitHub</span></h2>
-    <div class="gh-card fade-in">
-      <div class="gh-icon">⚙️</div>
-      <h3 style="font-size:22px;font-weight:800;">forex-quant-v10</h3>
-      <p class="gh-desc">AI-Powered Forex Analysis System. Machine learning pipeline for currency market forecasting with automated Telegram reports and Groq LLM integration.</p>
-      <div class="gh-stats">
-        <div>
-          <div class="gh-stat-val">5</div>
-          <div class="gh-stat-lbl">Versions</div>
-        </div>
-        <div>
-          <div class="gh-stat-val">60+</div>
-          <div class="gh-stat-lbl">Features</div>
-        </div>
-        <div>
-          <div class="gh-stat-val">3</div>
-          <div class="gh-stat-lbl">Pairs</div>
-        </div>
-      </div>
-      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-        <a href="https://github.com/" target="_blank" class="btn-primary">View Source Code ↗</a>
-        <a href="https://github.com/" target="_blank" class="btn-outline">⭐ Star on GitHub</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
 <footer>
   <div>
     <div class="footer-logo">FOREX QUANT V10</div>
@@ -1144,7 +1078,6 @@ model = <span class="cls">StackingClassifier</span>(
     <a href="#about">About</a>
     <a href="#evolution">Evolution</a>
     <a href="#roadmap">Roadmap</a>
-    <a href="https://github.com/" target="_blank">GitHub ↗</a>
   </div>
 </footer>
 
@@ -1160,6 +1093,16 @@ model = <span class="cls">StackingClassifier</span>(
   }, { threshold: 0.1 });
 
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Language Switcher Logic
+  const langSwitch = document.getElementById('lang-switch');
+  langSwitch.addEventListener('click', () => {
+    const htmlTag = document.documentElement;
+    const isUa = htmlTag.getAttribute('lang') === 'ua';
+    
+    htmlTag.setAttribute('lang', isUa ? 'en' : 'ua');
+    langSwitch.textContent = isUa ? 'UKR' : 'ENG';
+  });
 </script>
 </body>
 </html>
